@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>用户管理系统</title>
+<link rel="stylesheet" href="/user/css/style.css">
+<link rel="stylesheet" href="/user/css/left.css">
+</head>
+<body>
+	<div class="container">
+		<div class="topbar">
+			<div class="top">
+				<span class="ver">用户信息管理系统</span>
+			</div>
+		</div>
+		<div class="leftsidebar_box">
+			<div class="line"></div>
+			<dl class="syetem_management">
+				<dt>
+					<a th:href="@{/user/findAll}"><img
+						src="/user/images/left/select_xl01.png"><span>用户管理</span></a>
+				</dt>
+			</dl>
+			<dl class="custom">
+				<dt >
+					<a th:href="@{/user/findAllRole}"> <img
+						src="/user/images/left/select_xl01.png"><span onClick="changeImage()">角色管理</span>
+					</a>
+				</dt>
+
+			</dl>
+		</div>
+		<div class="content">
+			<table th:name="用户信息列表">
+				<caption align="top">角色信息列表</caption>
+				<thead>
+					<tr>
+						<th>用户名</th>
+						<th>姓名</th>
+						<th>部门</th>
+						<th>职务</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td th:text="${user.username}"></td>
+						<td th:text="${user.userInfo.name}"></td>
+						<td th:text="${user.userInfo.department}"></td>
+						<td th:text="${user.userInfo.duty}"></td>
+					</tr>
+				</tbody>
+			</table>
+			<ul>
+				<li>
+					<div class="RadioStyle">
+						<span style="font-size: 30px">角色:</span>
+						<div class="role">
+							<input type="checkbox" id="role1" name="role" value="user"
+								th:if="${#strings.contains(rolename,'user')}" checked="checked" />
+							<label for="role1">普通用户</label>
+						</div>
+						<div class="role">
+							<input type="checkbox" id="role2" name="role" value="admin"
+								th:if="${#strings.contains(rolename,'admin')}" checked="checked" />
+							<label for="role2">管理员</label>
+						</div>
+						<div class="role">
+							<input type="checkbox" id="role3" name="role" value="guest"
+								th:if="${#strings.contains(rolename,'guest')}" checked="checked" />
+							<label for="role3">游客</label>
+						</div>
+						<div class="role">
+							<input type="checkbox" id="role4" name="role" value="root"
+								th:if="${#strings.contains(rolename,'root')}" checked="checked" />
+							<label for="role4">超级管理员</label>
+						</div>
+						<input type="hidden" name="rname" id="rname" value="user admin">
+					</div>
+				</li>
+				<li>
+					<div class="note">
+						<span style="font-size: 30px;">权限信息:</span>
+						<div class="auth">
+							<label>普通用户只有<span>查询</span>权限
+							</label>
+						</div>
+						<div class="auth">
+							<label>管理员具有<span>查询、删除、更改</span>权限
+							</label>
+						</div>
+						<div class="auth">
+							<label>游客<span>没有</span>任何权限
+							</label>
+						</div>
+						<div class="auth">
+							<label>超级管理员<span>拥有所有</span>权限
+							</label>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<script src="http://www.jq22.com/jquery/1.11.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(".leftsidebar_box dt").css({
+			"background-color" : "#3992d0"
+		});
+		$(".leftsidebar_box dt img").attr("src",
+				"/user/images/left/select_xl01.png");
+		$(function() {
+			$(".leftsidebar_box dd").hide();
+			$(".leftsidebar_box dt").click(
+					function() {
+						$(".leftsidebar_box dt").css({
+							"background-color" : "#3992d0"
+						})
+						$(this).css({
+							"background-color" : "#317eb4"
+						});
+						$(this).parent().find('dd').removeClass("menu_chioce");
+						$(".leftsidebar_box dt img").attr("src",
+								"/user/images/left/select_xl01.png");
+						$(this).parent().find('img').attr("src",
+								"/user/images/left/select_xl.png");
+						$(".menu_chioce").slideUp();
+						$(this).parent().find('dd').slideToggle();
+						$(this).parent().find('dd').addClass("menu_chioce");
+					});
+		})
+	</script>
+<script type="text/javascript">
+var 
+</script>
+</body>
+</html>

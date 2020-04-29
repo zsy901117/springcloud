@@ -1,0 +1,29 @@
+server:
+  port: 5000
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000
+eureka:
+  instance:
+    hostname: registry
+    prefer-ip-address: false
+  client:
+    service-url:
+      defaultZone: http://172.20.120.18:8761/eureka/
+ribbon:
+  ReadTimeout: 20000
+  ConnectTimeout: 20000
+spring:
+   sleuth:
+    sampler:
+      percentage: 1.0
+   zipkin:
+    base-url: http://172.20.120.18:9411
+zuul:
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000

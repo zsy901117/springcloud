@@ -1,0 +1,39 @@
+server:
+  port: 9558
+spring:
+  application:
+    name: system-user
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      percentage: 1.0
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: shunguomysql
+    url: jdbc:mysql://172.20.120.11:3306/springcloud?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+    druid:
+      initial-size: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+mybatis-plus:
+  mapper-locations: mapper/*.xml
+  type-aliases-package: com.sg.entity
+eureka:
+  instance:
+    hostname: system-user
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+

@@ -1,0 +1,70 @@
+package com.sg;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.generator.AutoGenerator;
+import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
+import com.baomidou.mybatisplus.generator.config.FileOutConfig;
+import com.baomidou.mybatisplus.generator.config.GlobalConfig;
+import com.baomidou.mybatisplus.generator.config.PackageConfig;
+import com.baomidou.mybatisplus.generator.config.StrategyConfig;
+import com.baomidou.mybatisplus.generator.config.TemplateConfig;
+import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
+import com.baomidou.mybatisplus.generator.config.po.TableInfo;
+import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
+
+public class MpGenerator {
+	public static void main(String[] args) {
+		AutoGenerator mpg = new AutoGenerator();
+		mpg.setTemplateEngine(new VelocityTemplateEngine());
+		GlobalConfig gc = new GlobalConfig();
+		gc.setAuthor("zsy");
+		gc.setOutputDir("D:/ServiceBus/Code/SpringCloudDemo/mybatis-generator/src/main/java");
+		gc.setFileOverride(true);
+		gc.setActiveRecord(true);
+		gc.setEnableCache(false);
+		gc.setBaseResultMap(true);
+		gc.setBaseColumnList(true);
+		mpg.setGlobalConfig(gc);
+
+		DataSourceConfig db = new DataSourceConfig();
+		db.setDbType(DbType.MYSQL);
+		db.setTypeConvert(new MySqlTypeConvert());
+		db.setDriverName("com.mysql.jdbc.Driver");
+		db.setUsername("root");
+		db.setPassword("root");
+		db.setUrl("jdbc:mysql://localhost:3306/springcloud?useUnicode=true&characterEncoding=utf8");
+		mpg.setDataSource(db);
+		StrategyConfig sc = new StrategyConfig();
+		sc.setNaming(NamingStrategy.no_change);
+		sc.setInclude(new String[] { "zuul_route" });
+		mpg.setStrategy(sc);
+		PackageConfig pc = new PackageConfig();
+		pc.setParent("com.sg");
+		pc.setController("controller");
+		pc.setEntity("entity");
+		pc.setMapper("mapper");
+		pc.setXml("mapper");
+		mpg.setPackageInfo(pc);
+		TemplateConfig tc = new TemplateConfig();
+		tc.setEntity("templates/entity.java");
+		tc.setMapper("templates/mapper.java");
+		tc.setXml("templates/mapper.xml");
+		tc.setService("templates/service.java");
+		tc.setServiceImpl("templates/serviceImpl.java");
+		tc.setController("templates/controller.java");
+		List<FileOutConfig> focList = new ArrayList<FileOutConfig>();
+		focList.add(new FileOutConfig("templates/mapper.xml.vm") {
+			@Override
+			public String outputFile(TableInfo tableInfo) {
+				return tableInfo.getEntityName() + ".xml";
+			}
+		});
+		mpg.setTemplate(tc);
+		mpg.execute();
+
+	}
+}

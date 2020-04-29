@@ -1,0 +1,56 @@
+spring:
+  zipkin:
+    base-url: http://192.168.0.60:9411
+  thymeleaf:
+    prefix: classpath:/templates/
+    cache: false
+    mode: LEGACYHTML5
+    content-type: text/html;
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: 123456
+    url: jdbc:mysql://192.168.0.60:3306/sys-user?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+    druid:
+      initial-size: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+  application:
+    name: user-management
+  profiles:
+    active: null
+  cloud:
+   config:
+      fail-fast: true
+      uri: http://config:8001
+      username: user
+      password: ${CONFIG_SERVER_PASSWORD:password}
+      retry:
+        initial-interval: 2000
+        max-interval: 10000
+        multiplier: 2
+        max-attempts: 10
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.sg.entity
+server:
+  port: 1000
+eureka:
+  instance:
+    hostname: registry
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://registry:8761/eureka/
+management:
+  security:
+    enabled: false

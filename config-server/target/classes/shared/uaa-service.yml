@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://172.20.120.11:3306/springcloud?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
+    username: root
+    password: shunguomysql
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+server:
+  port: 9999
+eureka:
+  instance:
+    hostname: auth
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

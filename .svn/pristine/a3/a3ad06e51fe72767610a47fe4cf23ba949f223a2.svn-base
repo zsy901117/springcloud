@@ -1,0 +1,31 @@
+package com.sg.service;
+
+import com.sg.dao.impl.RoleDao;
+import com.sg.entity.Role;
+import java.util.List;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class RoleService {
+	@Autowired
+	private RoleDao roleDao;
+
+	public List<Role> findById(long id) {
+		List<Role> roleList = this.roleDao.findById(id);
+		return roleList;
+	}
+
+	public List<String> findRoleName(long id) {
+		return this.roleDao.findRoleName(id);
+	}
+
+	public void insertRole(Map<String, Long> ids) {
+		this.roleDao.insertRole(ids);
+	}
+
+	public void deleteRole(Map<String, Long> ids) {
+		this.roleDao.deleteRole(ids);
+	}
+}

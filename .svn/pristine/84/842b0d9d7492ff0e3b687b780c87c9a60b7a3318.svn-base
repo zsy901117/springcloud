@@ -1,0 +1,15 @@
+META-INF\spring-configuration-metadata.json
+com\sg\service\RoleService.class
+com\sg\entity\UserInfo.class
+com\sg\entity\User.class
+com\sg\dao\BaseDao.class
+com\sg\entity\Authority.class
+com\sg\UserApplication.class
+com\sg\controller\UserController.class
+com\sg\entity\Role.class
+com\sg\util\BPwdEncoderUtils.class
+com\sg\DruidConfiguration.class
+com\sg\dao\impl\RoleDao.class
+com\sg\dao\impl\UserDao.class
+com\sg\controller\RoleController.class
+com\sg\service\UserService.class

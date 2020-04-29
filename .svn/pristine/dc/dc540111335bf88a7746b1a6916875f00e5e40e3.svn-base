@@ -1,0 +1,31 @@
+package com.sg.entity;
+
+import java.io.Serializable;
+
+public class Authority
+  implements Serializable
+{
+  private static final long serialVersionUID = 1L;
+  private Long id;
+  private String authname;
+  
+  public Long getId()
+  {
+    return this.id;
+  }
+  
+  public void setId(Long id)
+  {
+    this.id = id;
+  }
+  
+  public String getAuthname()
+  {
+    return this.authname;
+  }
+  
+  public void setAuthname(String authname)
+  {
+    this.authname = authname;
+  }
+}

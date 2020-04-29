@@ -1,0 +1,31 @@
+package com.sg.controller;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.json.simple.JSONObject;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+@RestController
+@RequestMapping("/api")
+@Api(tags="01、获取北斗时间")
+public class TimeController {
+    /**
+     *获取系统时间
+     * 将电脑时间进行设置，与北斗授时同步
+     * @return
+     */
+    @GetMapping(value = "/getSystemTime")
+    @ResponseBody
+    @ApiOperation(value = "获取北斗时间",httpMethod = "GET")
+    public String getSystemTime() {
+        JSONObject result = new JSONObject();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = df.format(new Date());
+        result.put("msg", "ok");
+        result.put("method", "json");
+        result.put("data", time);
+        return result.toJSONString();
+    }
+}

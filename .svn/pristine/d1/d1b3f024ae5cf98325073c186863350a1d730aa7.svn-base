@@ -1,0 +1,85 @@
+package com.sg.service.impl;
+
+import com.sg.entity.Menu;
+import com.sg.mapper.MenuMapper;
+import com.sg.service.IMenuService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+/**
+ * <p>
+ *  服务实现类
+ * </p>
+ *
+ * @author zsy
+ * @since 2019-05-29
+ */
+@Service
+public class MenuServiceImpl implements IMenuService {
+ @Autowired
+ private MenuMapper Menumapper;
+ 
+     /**
+     * 新增menu
+     * 
+     * @param Menu信息
+     * 
+     */
+     @Override
+  public int insert(Menu Menu){
+  return Menumapper.insert(Menu);
+  }
+
+    /**
+     * 根据主键删除
+     * 
+     * @param ID
+     * @return 结果
+     */
+     @Override
+  public int delete(String ID){
+  return Menumapper.delete(ID);
+  }
+     /**
+     * 根据主键批量删除
+     * @param ID数组
+     * @return 结果
+     */
+     @Override
+   public int deleteByIds(String[] ids){
+   return Menumapper.deleteByIds(ids);
+   }
+
+     /**
+     * 修改menu
+     * 
+     * @param Menu 信息
+     * @return 结果
+     */
+     @Override
+	public int update(Menu Menu){
+	return Menumapper.update(Menu);
+	}
+	/**
+     * 根据主键查询信息
+     * 
+     * @param ID
+     * @return 结果
+     */
+     @Override
+	public Menu selectById(String ID){
+	return Menumapper.selectById(ID);
+	}
+	/**
+     * 条件查询Menu集合
+     * 
+     * @param ID
+     * @return 结果
+     */
+     @Override
+	public List<Menu> selectList(Menu Menu){
+	return Menumapper.selectList(Menu);
+	}
+}
+

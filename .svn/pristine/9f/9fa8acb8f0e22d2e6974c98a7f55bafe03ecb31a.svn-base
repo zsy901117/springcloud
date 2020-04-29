@@ -1,0 +1,64 @@
+package com.sg.service;
+
+import com.sg.dao.impl.UserDao;
+import com.sg.entity.User;
+import com.sg.entity.UserInfo;
+import com.sg.util.BPwdEncoderUtils;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+	@Autowired
+	private UserDao userdao;
+
+	public boolean checkUser(String name, String password) {
+		User user = this.userdao.findByName(name);
+		if ((user != null) && (BPwdEncoderUtils.matches(password, user.getPassword()))) {
+			return true;
+		}
+		return false;
+	}
+
+	public void addUser(User user) {
+		this.userdao.insert(user);
+	}
+
+	public void insertUserInfo(UserInfo userInfo) {
+		this.userdao.insertUserInfo(userInfo);
+	}
+
+	public void deleteUser(Long id) {
+		this.userdao.delete(id);
+	}
+
+	public void deleteUserInfo(Long id) {
+		this.userdao.deleteInfo(id);
+	}
+
+	public void update(User user) {
+		this.userdao.update(user);
+	}
+
+	public void updateInfo(UserInfo userInfo) {
+		this.userdao.updateInfo(userInfo);
+	}
+
+	public User findUserByName(String name) {
+		return this.userdao.findByName(name);
+	}
+
+	public User findUserById(long id) {
+		return this.userdao.findById(id);
+	}
+
+	public List<User> getUserList(String company) {
+		return this.userdao.findAll(company);
+	}
+
+	public List<User> findRoleList(String company) {
+		List<User> userlist = this.userdao.findAllRole(company);
+		return userlist;
+	}
+}

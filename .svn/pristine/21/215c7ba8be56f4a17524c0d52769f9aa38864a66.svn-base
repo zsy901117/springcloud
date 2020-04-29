@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${package.Mapper}.${table.mapperName}">
+
+#if(${enableCache})
+    <!-- 开启二级缓存 -->
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+
+#end
+#if(${baseResultMap})
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="${package.Entity}.${entity}">
+#foreach($field in ${table.fields})
+#if(${field.keyFlag})##生成主键排在第一位
+        <id column="${field.name}" property="${field.propertyName}" />
+#end
+#end
+#foreach($field in ${table.commonFields})##生成公共字段
+    <result column="${field.name}" property="${field.propertyName}" />
+#end
+#foreach($field in ${table.fields})
+#if(!${field.keyFlag})##生成普通字段
+        <result column="${field.name}" property="${field.propertyName}" />
+#end
+#end
+    </resultMap>
+
+#end
+#if(${baseColumnList})
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+#foreach($field in ${table.commonFields})
+        ${field.name},
+#end
+        ${table.fieldNames}
+    </sql>
+
+#end
+<insert id="insert" parameterType="${entity}">
+insert into ${table.name} 
+<trim prefix="(" suffix=")" suffixOverrides=",">
+#foreach($field in ${table.fields})
+<if test="${field.name} != null #if(${field.type} == 'String' ) and ${field.name}.trim() != '' #end"> $field.name,</if>
+#end
+</trim>
+<trim prefix="values (" suffix=")" suffixOverrides=",">
+#foreach($field in ${table.fields})
+<if test="${field.name} != null #if(${field.type} == 'String' ) and ${field.name}.trim() != '' #end"> #{$field.name},</if>
+#end
+</trim>
+</insert>
+<delete id="deleteById" parameterType="String">
+ delete from ${table.name} where ID = #{ID}
+</delete>
+<delete id="deleteByIds" parameterType="String">
+        delete from ${table.name} where  ID  in 
+        <foreach item="ID" collection="array" open="(" separator="," close=")">
+            #{ID}
+        </foreach>
+</delete>
+<update id="update" parameterType="${entity}">
+        update ${table.name}
+        <trim prefix="SET" suffixOverrides=",">
+#foreach($field in ${table.fields})
+#if(!${field.keyFlag})
+           <if test="${field.name} != null #if(${field.type} == 'String' ) and ${field.name}.trim() != '' #end">  ${field.name} = #{$field.name},</if>
+#end
+#end
+        </trim>
+        where    ID= #{ID}
+    </update>
+<select id="selectList" parameterType="${entity}" resultMap="BaseResultMap" >
+select <include refid="Base_Column_List" /> from ${table.name}
+<where>
+#foreach($field in ${table.fields})
+<if test="${field.name} != null #if(${field.type} == 'String' ) and ${field.name}.trim() != '' #end"> and ${field.name} = #{$field.name}</if>
+#end
+</where>
+</select>
+<select id="selectById" parameterType="String" resultMap="BaseResultMap">
+select<include refid="Base_Column_List" />from ${table.name} where ID=#{ID}
+</select>
+
+</mapper>

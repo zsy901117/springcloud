@@ -1,0 +1,18 @@
+server:
+  port: 5001
+security.basic.enabled: false
+turbine:
+  aggregator:
+    clusterConfig: default
+  appConfig: system-user , video-play-service
+  clusterNameExpression: new String("default")
+eureka:
+  instance:
+    hostname: monitor
+    prefer-ip-address: false
+  client:
+    service-url:
+      defaultZone: http://192.168.0.60:8761/eureka/
+management:
+  security:
+    enabled: false

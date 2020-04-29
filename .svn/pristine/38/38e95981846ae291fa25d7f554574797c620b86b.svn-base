@@ -1,0 +1,109 @@
+package com.sg.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.sg.entity.Zuul_route;
+import com.sg.query.RouteQuery;
+import com.sg.service.IZuul_routeService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
+/**
+ * <p>
+ * 前端控制器
+ * </p>
+ *
+ * @author zsy
+ * @since 2019-06-11
+ */
+@RestController
+@RequestMapping("/route")
+@Api(value = "动态路由控制器")
+public class Zuul_routeController {
+
+	@Autowired
+	private IZuul_routeService zrService;
+
+	/**
+	 * 根据主键查询信息
+	 * 
+	 * @param ID
+	 * @return 结果
+	 */
+	@GetMapping("/id")
+	@ApiOperation(value = "根据主键查询路由信息")
+	@ApiImplicitParams({
+		@ApiImplicitParam(value = "令牌", name = "access_token", dataType = "String", required = true,paramType = "query"),
+		@ApiImplicitParam(value = "主键",name = "id",required = true,dataType = "String",paramType = "query")
+	})
+	public Zuul_route findById(@RequestParam String id) {
+		return zrService.selectById(id);
+	}
+
+	@PostMapping("/page")
+	@ApiOperation(value = "路由信息分页查询")
+	@ApiImplicitParams({
+		@ApiImplicitParam(value = "令牌", name = "access_token", dataType = "String", required = true,paramType = "query"),
+	})
+	public RouteQuery page(RouteQuery query) {
+		return zrService.page(query);
+	}
+
+	/**
+	 * 新增zuul_route
+	 * 
+	 * @param Zuul_route信息
+	 * 
+	 */
+	@PostMapping("/add")
+	@ApiOperation(value = "添加路由信息")
+	@ApiImplicitParams({
+		@ApiImplicitParam(value = "令牌", name = "access_token", dataType = "String", required = true,paramType = "query"),
+		@ApiImplicitParam(value = "路由实体类", name = "zuul_route", dataType = "Zuul_route", required = true),
+	})
+	public int add(@RequestBody Zuul_route zuul_route) {
+		return zrService.insert(zuul_route);
+	}
+
+	/**
+	 * 修改zuul_route
+	 * 
+	 * @param Zuul_route 信息
+	 * @return 结果
+	 */
+	@PostMapping("/update")
+	@ApiOperation(value = "修改路由信息")
+	@ApiImplicitParams({
+		@ApiImplicitParam(value = "令牌", name = "access_token", dataType = "String", required = true,paramType = "query"),
+		@ApiImplicitParam(value = "路由实体类", name = "zuul_route", dataType = "Zuul_route", required = true),
+	})
+	public int update(@RequestBody Zuul_route zuul_route) {
+		return zrService.update(zuul_route);
+	}
+
+	/**
+	 * 根据主键删除
+	 * 
+	 * @param ID
+	 * @return 结果
+	 */
+	@PostMapping("/deleteById")
+	@ApiOperation(value = "根据主键删除路由信息")
+	@ApiImplicitParams({
+		@ApiImplicitParam(value = "令牌", name = "access_token", dataType = "String", required = true,paramType = "query"),
+		@ApiImplicitParam(value = "主键",name = "id",required = true,dataType = "String",paramType = "query")
+	})
+	public int deleteOne(@RequestParam String id) {
+		return zrService.delete(id);
+	}
+
+}

@@ -1,0 +1,46 @@
+server:
+  port: 8868
+eureka:
+  instance:
+    hostname: gateway
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://172.20.120.18:8761/eureka/
+spring:
+  application:
+    name: gateway-service
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: shunguomysql
+    url: jdbc:mysql://172.20.120.11:3306/springcloud?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+    druid:
+      initial-size: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+  sleuth:
+    sampler:
+      percentage: 1.0
+  zipkin:
+    base-url: http://172.20.120.18:9411
+  http:
+    multipart:
+      max-file-size: 1024Mb
+      max-request-size: 1024Mb
+      enabled: true
+security:
+  basic:
+    enabled: false
+management:
+  security:
+    enabled: false

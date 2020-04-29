@@ -1,0 +1,85 @@
+package ${package.ServiceImpl};
+
+import ${package.Entity}.${entity};
+import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+import ${superServiceImplClassPackage};
+import org.springframework.stereotype.Service;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+/**
+ * <p>
+ * $!{table.comment} 服务实现类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Service
+public class ${table.serviceImplName} implements ${table.serviceName} {
+ @Autowired
+ private ${table.mapperName} ${entity}mapper;
+ 
+     /**
+     * 新增${table.name}
+     * 
+     * @param ${entity}信息
+     * 
+     */
+     @Override
+  public int insert(${entity} ${table.entityName}){
+  return ${entity}mapper.insert(${table.entityName});
+  }
+
+    /**
+     * 根据主键删除
+     * 
+     * @param ID
+     * @return 结果
+     */
+     @Override
+  public int delete(String ID){
+  return ${entity}mapper.delete(ID);
+  }
+     /**
+     * 根据主键批量删除
+     * @param ID数组
+     * @return 结果
+     */
+     @Override
+   public int deleteByIds(String[] ids){
+   return ${entity}mapper.deleteByIds(ids);
+   }
+
+     /**
+     * 修改${table.name}
+     * 
+     * @param ${entity} 信息
+     * @return 结果
+     */
+     @Override
+	public int update(${entity} ${table.entityName}){
+	return ${entity}mapper.update(${table.entityName});
+	}
+	/**
+     * 根据主键查询信息
+     * 
+     * @param ID
+     * @return 结果
+     */
+     @Override
+	public ${entity} selectById(String ID){
+	return ${entity}mapper.selectById(ID);
+	}
+	/**
+     * 条件查询${entity}集合
+     * 
+     * @param ID
+     * @return 结果
+     */
+     @Override
+	public List<${entity}> selectList(${entity} ${table.entityName}){
+	return ${entity}mapper.selectList(${table.entityName});
+	}
+}
+

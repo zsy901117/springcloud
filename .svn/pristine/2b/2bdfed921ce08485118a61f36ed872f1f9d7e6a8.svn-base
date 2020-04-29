@@ -1,0 +1,17 @@
+server:
+  port: 8001
+spring:
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/shared      
+  profiles:
+    active: native
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: false
+  client:
+    service-url:
+      defaultZone: http://172.20.120.18:8761/eureka/

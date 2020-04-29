@@ -1,0 +1,191 @@
+package com.sg.controller;
+
+import com.sg.entity.User;
+import com.sg.entity.UserInfo;
+import com.sg.service.UserService;
+import com.sg.util.BPwdEncoderUtils;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+@RestController
+@RequestMapping({ "/user" })
+public class UserController {
+	@Autowired
+	private UserService userService;
+
+	@GetMapping({ "/login" })
+	public ModelAndView login1() {
+		ModelAndView mv = new ModelAndView("login/login");
+		return mv;
+	}
+
+	@PostMapping({ "/check" })
+	public void check(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		PrintWriter out = response.getWriter();
+		JSONObject json = new JSONObject();
+		boolean flag = this.userService.checkUser(username, password);
+		if (flag == true) {
+			json.put("result", "success");
+		} else {
+			json.put("result", "error");
+		}
+		out.print(json);
+	}
+
+	@GetMapping({ "/registry" })
+	public ModelAndView registry() {
+		ModelAndView mv = new ModelAndView("user/registry");
+		return mv;
+	}
+
+	@PostMapping({ "/checkname" })
+	public void checkname(HttpServletRequest request, HttpServletResponse response) {
+		String username = request.getParameter("username");
+		JSONObject json = null;
+		PrintWriter out = null;
+		try {
+			out = response.getWriter();
+			json = new JSONObject();
+			User user = this.userService.findUserByName(username);
+			if (user == null) {
+				json.put("result", "success");
+			} else {
+				json.put("result", "error");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		out.print(json);
+	}
+
+	@PostMapping({ "/create" })
+	public ModelAndView createUser(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("redirect:login");
+		String uname = request.getParameter("username");
+		String password = request.getParameter("pwd");
+		String name = request.getParameter("name");
+		String sex = request.getParameter("sex");
+		String company = request.getParameter("company");
+		String department = request.getParameter("department");
+		String duty = request.getParameter("duty");
+		User user = new User();
+		user.setUsername(uname);
+		String bCryptPassword = BPwdEncoderUtils.BCryptPassword(password);
+		user.setPassword(bCryptPassword);
+		this.userService.addUser(user);
+		UserInfo userInfo = new UserInfo();
+		userInfo.setId(user.getId());
+		userInfo.setName(name);
+		userInfo.setSex(sex);
+		userInfo.setCompany(company);
+		userInfo.setDepartment(department);
+		userInfo.setDuty(duty);
+		this.userService.insertUserInfo(userInfo);
+		return mv;
+	}
+
+	@RequestMapping({ "/changepwd" })
+	public ModelAndView changepwd() {
+		ModelAndView mv = new ModelAndView("user/changepwd");
+		return mv;
+	}
+
+	@PostMapping({ "/pwdedit" })
+	public ModelAndView useredit(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("redirect:login");
+		String uname = request.getParameter("username");
+		User user = this.userService.findUserByName(uname);
+		String password = request.getParameter("pwd");
+		String entryPassword = BPwdEncoderUtils.BCryptPassword(password);
+		user.setPassword(entryPassword);
+		this.userService.update(user);
+		return mv;
+	}
+
+	@RequestMapping({ "/delete" })
+	public ModelAndView deleteUser(@RequestParam("id") long id) {
+		ModelAndView mv = new ModelAndView("redirect:findAll");
+		this.userService.deleteUser(Long.valueOf(id));
+		this.userService.deleteUserInfo(Long.valueOf(id));
+		return mv;
+	}
+
+	@RequestMapping({ "/edit" })
+	public ModelAndView edit(@RequestParam("id") long id) {
+		ModelAndView mv = new ModelAndView("user/useredit");
+		User user = this.userService.findUserById(id);
+		mv.addObject("user", user);
+		return mv;
+	}
+
+	@PostMapping({ "/update" })
+	public ModelAndView update(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		String uname = request.getParameter("username");
+		String name = request.getParameter("name");
+		String sex = request.getParameter("sex");
+		String company = request.getParameter("company");
+		String department = request.getParameter("department");
+		String duty = request.getParameter("duty");
+		User user = new User();
+		Long id1 = Long.valueOf(id);
+		System.out.println(id1);
+		user.setId(id1);
+		user.setUsername(uname);
+		this.userService.update(user);
+		UserInfo userInfo = new UserInfo();
+		userInfo.setId(id1);
+		userInfo.setName(name);
+		userInfo.setSex(sex);
+		userInfo.setCompany(company);
+		userInfo.setDepartment(department);
+		userInfo.setDuty(duty);
+		this.userService.updateInfo(userInfo);
+		ModelAndView mv = new ModelAndView("redirect:findAll");
+		return mv;
+	}
+
+	@GetMapping({ "/findById" })
+	public ModelAndView findById(@RequestParam("id") long id) {
+		ModelAndView mv = new ModelAndView("user/user");
+		User user = this.userService.findUserById(id);
+		mv.addObject("user", user);
+		return mv;
+	}
+
+	@GetMapping({ "/findByName" })
+	public User findUserByName(String name) {
+		return this.userService.findUserByName(name);
+	}
+
+	@GetMapping({ "/findAll" })
+	public ModelAndView findList() {
+		ModelAndView mv = new ModelAndView("user/userlist");
+		String company = "����";
+		List<User> userList = this.userService.getUserList(company);
+		mv.addObject("userList", userList);
+		return mv;
+	}
+
+	@GetMapping({ "/findAllRole" })
+	public ModelAndView findRoleList() {
+		ModelAndView mv = new ModelAndView("role/rolelist");
+		String company = "����";
+		List<User> rolelist = this.userService.findRoleList(company);
+		mv.addObject("rolelist", rolelist);
+		return mv;
+	}
+}

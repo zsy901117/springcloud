@@ -1,0 +1,43 @@
+package com.sg.dao.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.springframework.stereotype.Repository;
+
+import com.sg.entity.Role;
+
+@Repository
+public class RoleDao
+  extends SqlSessionDaoSupport
+{
+  @Resource
+  public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory)
+  {
+    super.setSqlSessionFactory(sqlSessionFactory);
+  }
+  
+  public List<Role> findById(long id)
+  {
+    return getSqlSession().selectList("role.findById", Long.valueOf(id));
+  }
+  
+  public List<String> findRoleName(long id)
+  {
+    return getSqlSession().selectList("role.findRoleName", Long.valueOf(id));
+  }
+  
+  public void insertRole(Map<String, Long> ids)
+  {
+    getSqlSession().insert("role.add", ids);
+  }
+  
+  public void deleteRole(Map<String, Long> ids)
+  {
+    getSqlSession().delete("role.deleteRole", ids);
+  }
+}

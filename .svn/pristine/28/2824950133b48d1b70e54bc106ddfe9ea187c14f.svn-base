@@ -1,0 +1,14 @@
+com\sg\config\security\ResourceServerConfiguration.class
+com\sg\controller\RefreshController.class
+com\sg\permission\PermissionServiceImpl.class
+com\sg\entity\Menu.class
+com\sg\zuulfilter\PreFilter.class
+com\sg\feign\MenuService.class
+com\sg\feign\fallback\MenuServiceHystrix.class
+com\sg\GatewayServiceApplication.class
+com\sg\config\CustomZuulConfig.class
+com\sg\service\RefreshRouteService.class
+com\sg\config\security\JwtConfiguration.class
+com\sg\router\DynamicRouteLocator$ZuulRouteVO.class
+com\sg\router\DynamicRouteLocator.class
+com\sg\zuulfilter\PostFilter.class

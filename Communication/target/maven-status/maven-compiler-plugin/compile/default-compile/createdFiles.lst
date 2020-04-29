@@ -1,0 +1,5 @@
+com\sg\Communication.class
+com\sg\util\MyUserInfo.class
+com\sg\util\Shell.class
+com\sg\config\SwaggerConfig.class
+com\sg\controller\TXController.class

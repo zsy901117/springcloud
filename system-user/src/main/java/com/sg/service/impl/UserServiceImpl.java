@@ -1,0 +1,285 @@
+package com.sg.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import com.sg.dto.LoginDTO;
+import com.sg.dto.UserInfoDTO;
+import com.sg.entity.JWT;
+import com.sg.entity.Menu;
+import com.sg.entity.Role;
+import com.sg.entity.Role_menu;
+import com.sg.entity.User;
+import com.sg.entity.User_role;
+import com.sg.exception.CommonException;
+import com.sg.exception.ErrorCode;
+import com.sg.feignclient.AuthServiceClient;
+import com.sg.mapper.UserMapper;
+import com.sg.query.UserQuery;
+import com.sg.service.IUserService;
+import com.sg.util.BPwdEncoderUtils;
+import com.sg.util.UUIDUtil;
+
+/**
+ * <p>
+ * 服务实现类
+ * </p>
+ *
+ * @author zsy
+ * @since 2019-05-26
+ */
+@Service
+public class UserServiceImpl implements IUserService {
+	@Autowired
+	private UserMapper usermapper;
+	@Autowired
+	private User_roleServiceImpl user_roleService;
+	@Autowired
+	private Role_menuServiceImpl role_menuService;
+	@Autowired
+	private RoleServiceImpl roleService;
+	@Autowired
+	private MenuServiceImpl menuService;
+
+	@Autowired
+	private AuthServiceClient authServiceClient;
+
+	public LoginDTO login(String username, String password) {
+		LoginDTO loginDTO = new LoginDTO();
+		User user = usermapper.selectByName(username);
+		if (null == user) {
+			throw new CommonException(ErrorCode.USER_NOT_FOUND);
+		}
+		if (!BPwdEncoderUtils.matches(password, user.getPassword())) {
+			throw new CommonException(ErrorCode.USER_PASSWORD_ERROR);
+		}
+		//base64加密客户端信息gateway-service:123456
+		JWT jwtToken = authServiceClient.getToken("Basic Z2F0ZXdheS1zZXJ2aWNlOjEyMzQ1Ng==", "password", username,
+				password);
+		String access_token = jwtToken.getAccess_token();
+		user.setToken(access_token);
+		usermapper.update(user);
+		loginDTO.setAccess_token(access_token);
+		loginDTO.setCode("success");
+		return loginDTO;
+	}
+
+	public List<Menu> getMenus(String username) {
+		List<Menu> menus = new ArrayList<Menu>();
+		if (username != null && username != "") {
+			User user = usermapper.selectByName(username);
+			if (user != null) {
+				List<User_role> urs = user_roleService.selectByUserId(user.getUser_id());
+				if (urs != null) {
+					List<Role_menu> rolemenus = new ArrayList<Role_menu>();
+					for (User_role ur : urs) {
+						List<Role_menu> rms = role_menuService.selectByRoleId(ur.getRole_id());
+						rolemenus.addAll(rms);
+					}
+					if (rolemenus != null) {
+						for (Role_menu rm : rolemenus) {
+							Menu menu = menuService.selectById(rm.getAuth_id());
+							menus.add(menu);
+						}
+					}
+				}
+			}
+		}
+
+		return menus;
+	}
+
+	/**
+	 * 根据token获取用户详细信息
+	 * 
+	 */
+	public UserInfoDTO getInfo(String username) {
+		UserInfoDTO userInfoDTO = new UserInfoDTO();
+		if (username != null && username != "") {
+			User user = usermapper.selectByName(username);
+			userInfoDTO.setUser(user);
+			if (user != null) {
+				List<User_role> urs = user_roleService.selectByUserId(user.getUser_id());
+				if (urs != null) {
+					List<String> roles = new ArrayList<String>();
+					List<Role_menu> rolemenus = new ArrayList<Role_menu>();
+					for (User_role ur : urs) {
+						Role role = roleService.selectById(ur.getRole_id());
+						roles.add(role.getRole_code());
+						List<Role_menu> rms = role_menuService.selectByRoleId(ur.getRole_id());
+						rolemenus.addAll(rms);
+					}
+					if (rolemenus != null) {
+						List<String> permissions = new ArrayList<String>();
+						for (Role_menu rm : rolemenus) {
+							Menu menu = menuService.selectById(rm.getAuth_id());
+							permissions.add(menu.getPermission());
+						}
+						userInfoDTO.setPermissions(permissions);
+					}
+					userInfoDTO.setRoles(roles);
+				}
+			}
+		}
+		return userInfoDTO;
+	}
+
+	public List<String> getRoleIds(String username) {
+		List<String> rolecodes = new ArrayList<String>();
+		if (username != null && username != "") {
+			User user = usermapper.selectByName(username);
+			if (user != null) {
+				List<User_role> urs = user_roleService.selectByUserId(user.getUser_id());
+				if (urs != null) {
+					for (User_role ur : urs) {
+						Role role = roleService.selectById(ur.getRole_id());
+						rolecodes.add(role.getRole_id());
+					}
+				}
+			}
+		}
+		return rolecodes;
+	}
+
+	/**
+	 * 新增user
+	 * 
+	 * @param user
+	 * 
+	 */
+	@Override
+	public int insert(User user) {
+		String userid = UUIDUtil.getUUID();
+		user.setUser_id(userid);
+		user.setPassword(BPwdEncoderUtils.BCryptPassword(user.getPassword()));
+		int userinsert = usermapper.insert(user);
+		List<Role> roles = user.getRoles();
+		int num = 0;
+		if (roles != null) {
+			for (Role role : roles) {
+				User_role ur = new User_role();
+				ur.setUser_id(userid);
+				ur.setRole_id(role.getRole_id());
+				num += user_roleService.insert(ur);
+			}
+		}
+		return userinsert + num;
+	}
+
+	/**
+	 * 根据主键删除
+	 * 
+	 * @param user_id
+	 * @return 结果
+	 */
+	@Override
+	public int delete(String user_id) {
+		int deleterole = user_roleService.delete(user_id);
+		User user = new User();
+		user.setUser_id(user_id);
+		user.setDel_flag("1");
+		int deleteuser = usermapper.update(user);
+		return deleterole + deleteuser;
+	}
+
+	/**
+	 * 根据主键批量删除
+	 * 
+	 * @param ids
+	 * @return 结果
+	 */
+	@Override
+	public int deleteByIds(String[] ids) {
+		return usermapper.deleteByIds(ids);
+	}
+
+	/**
+	 * 修改user
+	 * 
+	 * @param user 信息
+	 * @return 结果
+	 */
+	@Override
+	public int update(User user) {
+		user.setPassword(null);
+		List<Role> roles = user.getRoles();
+		int update = usermapper.update(user);
+		int delete = user_roleService.delete(user.getUser_id());
+		int num = 0;
+		if (roles != null) {
+			for (Role role : roles) {
+				User_role ur = new User_role();
+				ur.setUser_id(user.getUser_id());
+				ur.setRole_id(role.getRole_id());
+				num += user_roleService.insert(ur);
+			}
+		}
+		return update + delete + num;
+	}
+
+	public int updatepwd(User user) {
+		User user2 = new User();
+		if (user.getPassword() != null&&user.getUser_id()!=null) {
+			user2.setUser_id(user.getUser_id());
+			user2.setPassword(BPwdEncoderUtils.BCryptPassword(user.getPassword()));
+		}
+		int update = usermapper.update(user2);
+		return update;
+	}
+
+	/**
+	 * 根据主键查询信息
+	 * 
+	 * @param ID
+	 * @return 结果
+	 */
+	@Override
+	public User selectById(String ID) {
+		 User user = usermapper.selectById(ID);
+		 user.setPassword("");
+		 return user;
+	}
+
+	/**
+	 * 根据用户名查询信息
+	 * 
+	 * @param username
+	 * @return 结果
+	 */
+	public User selectByName(String username) {
+		return usermapper.selectByName(username);
+	}
+
+	/**
+	 * 统计用户名数量
+	 * 
+	 * @param username
+	 * @return
+	 */
+	public int checkUser(String username) {
+		return usermapper.checkUser(username);
+	}
+
+	/**
+	 * 条件查询User集合
+	 * 
+	 * @param user
+	 * @return 结果
+	 */
+	@Override
+	public List<User> selectList(User user) {
+		return usermapper.selectList(user);
+	}
+
+	public UserQuery pageUserByQuery(UserQuery query) {
+		query.setOptimizeCountSql(false);
+		int total = usermapper.userCount();
+		query.setTotal(total);
+		usermapper.pageUserByQuery(query);
+		return query;
+	}
+}

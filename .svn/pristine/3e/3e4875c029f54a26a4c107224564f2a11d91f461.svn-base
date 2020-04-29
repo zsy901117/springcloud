@@ -1,0 +1,60 @@
+package com.sg.service;
+
+import com.sg.entity.User_role;
+import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
+/**
+ * <p>
+ *  服务类
+ * </p>
+ *
+ * @author zsy
+ * @since 2019-05-29
+ */
+
+public interface IUser_roleService  {
+  /**
+     * 新增user_role
+     * 
+     * @param User_role信息
+     * 
+     */
+  public int insert(User_role User_role);
+
+    /**
+     * 根据主键删除
+     * 
+     * @param ID
+     * @return 结果
+     */
+  public int delete(String ID);
+     /**
+     * 根据主键批量删除
+     * @param ID数组
+     * @return 结果
+     */
+   public int deleteByIds(String[] ids);
+
+     /**
+     * 修改user_role
+     * 
+     * @param User_role 信息
+     * @return 结果
+     */
+	public int update(User_role User_role);
+	/**
+     * 根据主键查询信息
+     * 
+     * @param ID
+     * @return 结果
+     */
+	public User_role selectById(String ID);
+	/**
+     * 条件查询User_role集合
+     * 
+     * @param ID
+     * @return 结果
+     */
+	public List<User_role> selectList(User_role User_role);
+}
+

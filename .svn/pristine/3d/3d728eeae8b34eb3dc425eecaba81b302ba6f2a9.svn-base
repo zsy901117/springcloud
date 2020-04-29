@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sg.mapper.User_roleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sg.entity.User_role">
+        <id column="user_id" property="user_id" />
+        <result column="role_id" property="role_id" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        user_id, role_id
+    </sql>
+
+<insert id="insert" parameterType="User_role">
+insert into user_role 
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<if test="user_id != null "> user_id,</if>
+<if test="role_id != null "> role_id,</if>
+</trim>
+<trim prefix="values (" suffix=")" suffixOverrides=",">
+<if test="user_id != null "> #{user_id},</if>
+<if test="role_id != null "> #{role_id},</if>
+</trim>
+</insert>
+<delete id="deleteById" parameterType="String">
+ delete from user_role where ID = #{ID}
+</delete>
+<delete id="deleteByIds" parameterType="String">
+        delete from user_role where  ID  in 
+        <foreach item="ID" collection="array" open="(" separator="," close=")">
+            #{ID}
+        </foreach>
+</delete>
+<update id="update" parameterType="User_role">
+        update user_role
+        <trim prefix="SET" suffixOverrides=",">
+           <if test="role_id != null ">  role_id = #{role_id},</if>
+        </trim>
+        where    ID= #{ID}
+    </update>
+<select id="selectList" parameterType="User_role" resultMap="BaseResultMap" >
+select <include refid="Base_Column_List" /> from user_role
+<where>
+<if test="user_id != null "> and user_id = #{user_id}</if>
+<if test="role_id != null "> and role_id = #{role_id}</if>
+</where>
+</select>
+<select id="selectById" parameterType="String" resultMap="BaseResultMap">
+select<include refid="Base_Column_List" />from user_role where ID=#{ID}
+</select>
+
+</mapper>

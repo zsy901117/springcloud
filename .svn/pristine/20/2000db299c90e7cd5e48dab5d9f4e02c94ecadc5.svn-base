@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sg.mapper.RoleMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.sg.entity.Role">
+		<id column="role_id" property="role_id" />
+		<result column="role_code" property="role_code" />
+		<result column="role_name" property="role_name" />
+		<result column="del_flag" property="del_flag" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		role_id, role_code, role_name, del_flag
+	</sql>
+
+	<insert id="insert" parameterType="Role">
+		insert into role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="role_id != null "> role_id,</if>
+			<if test="role_code != null "> role_code,</if>
+			<if test="role_name != null "> role_name,</if>
+			<if test="del_flag != null "> del_flag,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="role_id != null "> #{role_id},</if>
+			<if test="role_code != null "> #{role_code},</if>
+			<if test="role_name != null "> #{role_name},</if>
+			<if test="del_flag != null "> #{del_flag},</if>
+		</trim>
+	</insert>
+	<delete id="deleteById" parameterType="String">
+		delete from role where
+		role_id = #{role_id}
+	</delete>
+	<delete id="deleteByIds" parameterType="String">
+		delete from role where role_id in
+		<foreach item="role_id" collection="array" open="("
+			separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+	<update id="update" parameterType="Role">
+		update role
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="role_code != null "> role_code = #{role_code},</if>
+			<if test="role_name != null "> role_name = #{role_name},</if>
+			<if test="del_flag != null "> del_flag = #{del_flag},</if>
+		</trim>
+		where role_id= #{role_id}
+	</update>
+	<select id="selectList" parameterType="Role"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from role
+		<where>
+			<if test="role_id != null "> and role_id = #{role_id}</if>
+			<if test="role_code != null "> and role_code = #{role_code}</if>
+			<if test="role_name != null "> and role_name = #{role_name}</if>
+			<if test="del_flag != null "> and del_flag = #{del_flag}</if>
+		</where>
+	</select>
+	<select id="selectById" parameterType="String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from role where role_id=#{role_id}
+	</select>
+	<select id="selectByRoleCode" parameterType="String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from role where role_code=#{role_code}  and del_flag = '0'
+	</select>
+	<select id="roleCount" resultType="int">
+		select count(1) from role
+		where del_flag = '0'
+	</select>
+	<select id="checkrole" resultType="int">
+		select count(1) from role
+		where  role_code =  #{role_code}
+	</select>
+	<select id="pageRoleByQuery"
+		parameterType="com.sg.query.RoleQuery" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from role
+		<where>
+			<if test="role_code != null "> and role_code like concat('%', #{role_code}, '%')</if>
+			<if test="role_name != null "> and role_name like concat('%', #{role_name}, '%')</if>
+		</where>
+	</select>
+</mapper>

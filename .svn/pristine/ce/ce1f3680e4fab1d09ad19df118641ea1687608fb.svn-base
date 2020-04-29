@@ -1,0 +1,8 @@
+com\sg\config\WebSecurityConfig.class
+com\sg\dao\UserDao.class
+com\sg\UaaServiceApplication.class
+com\sg\entity\User.class
+com\sg\config\WebSecurityConfig$1.class
+com\sg\entity\Role.class
+com\sg\config\OAuth2Config.class
+com\sg\service\UserServiceDetail.class

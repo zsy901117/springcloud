@@ -1,0 +1,88 @@
+package ${package.Controller};
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import ${package.Entity}.${entity};
+import ${package.Service}.${table.serviceName};
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@RestController
+@RequestMapping("/${entity}")
+public class ${table.controllerName} extends BaseController{
+
+@Autowired private ${table.serviceName} ${entity}Service;
+
+    /**
+     * 条件查询${entity}集合
+     * 
+     * @param ID
+     * @return 结果
+     */
+
+@PostMapping("/list")
+public List<${entity}> list(${entity} ${table.entityName}){
+  return ${entity}Service.selectList(${table.entityName});
+}
+   /**
+     * 根据主键查询信息
+     * 
+     * @param ID
+     * @return 结果
+     */
+@PostMapping("/findOne")
+public ${entity} findOne(String id){
+ return ${entity}Service.selectById(id);
+}
+   /**
+     * 新增${table.name}
+     * 
+     * @param ${entity}信息
+     * 
+     */
+@PostMapping("/add")
+public int add(${entity} ${table.entityName}){
+ return ${entity}Service.insert(${table.entityName});
+}
+    /**
+     * 修改${table.name}
+     * 
+     * @param ${entity} 信息
+     * @return 结果
+     */
+@PostMapping("/update")
+public int update(${entity} ${table.entityName}){
+ return ${entity}Service.update(${table.entityName});
+}
+ 
+    /**
+     * 根据主键删除
+     * 
+     * @param ID
+     * @return 结果
+     */
+@PostMapping("/deleteOne")
+public int deleteOne(String id){
+ return ${entity}Service.delete(id);
+}
+
+     /**
+     * 根据主键批量删除
+     * @param ID数组
+     * @return 结果
+     */
+@PostMapping("/deleteList")
+public int deleteList(String[] ids){
+return ${entity}Service.deleteByIds(ids);
+}
+}
+

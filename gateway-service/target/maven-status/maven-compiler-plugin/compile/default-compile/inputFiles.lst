@@ -1,0 +1,16 @@
+D:\ServiceBus\Code\SpringCloudDemo\gateway-service\src\main\java\com\sg\permission\PermissionServiceImpl.java
+D:\ServiceBus\Code\SpringCloudDemo\gateway-service\src\main\java\com\sg\zuulfilter\PostFilter.java
+D:\ServiceBus\Code\SpringCloudDemo\gateway-service\src\main\java\com\sg\feign\config\FeignConfig.java
+D:\ServiceBus\Code\SpringCloudDemo\gateway-service\src\main\java\com\sg\controller\RefreshController.java
+D:\ServiceBus\Code\SpringCloudDemo\gateway-service\src\main\java\com\sg\config\CustomZuulConfig.java
+D:\ServiceBus\Code\SpringCloudDemo\gateway-service\src\main\java\com\sg\config\DocumentationConfig.java
+D:\ServiceBus\Code\SpringCloudDemo\gateway-service\src\main\java\com\sg\router\DynamicRouteLocator.java
+D:\ServiceBus\Code\SpringCloudDemo\gateway-service\src\main\java\com\sg\config\security\ResourceServerConfiguration.java
+D:\ServiceBus\Code\SpringCloudDemo\gateway-service\src\main\java\com\sg\config\security\JwtConfiguration.java
+D:\ServiceBus\Code\SpringCloudDemo\gateway-service\src\main\java\com\sg\entity\Zuul_route.java
+D:\ServiceBus\Code\SpringCloudDemo\gateway-service\src\main\java\com\sg\service\RefreshRouteService.java
+D:\ServiceBus\Code\SpringCloudDemo\gateway-service\src\main\java\com\sg\feign\MenuService.java
+D:\ServiceBus\Code\SpringCloudDemo\gateway-service\src\main\java\com\sg\zuulfilter\PreFilter.java
+D:\ServiceBus\Code\SpringCloudDemo\gateway-service\src\main\java\com\sg\feign\fallback\MenuServiceHystrix.java
+D:\ServiceBus\Code\SpringCloudDemo\gateway-service\src\main\java\com\sg\entity\Menu.java
+D:\ServiceBus\Code\SpringCloudDemo\gateway-service\src\main\java\com\sg\GatewayServiceApplication.java

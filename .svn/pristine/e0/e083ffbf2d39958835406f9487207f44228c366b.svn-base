@@ -1,0 +1,60 @@
+package ${package.Service};
+
+import ${package.Entity}.${entity};
+import ${superServiceClassPackage};
+import java.util.List;
+/**
+ * <p>
+ * $!{table.comment} 服务类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+
+public interface ${table.serviceName}  {
+  /**
+     * 新增${table.name}
+     * 
+     * @param ${entity}信息
+     * 
+     */
+  public int insert(${entity} ${table.entityName});
+
+    /**
+     * 根据主键删除
+     * 
+     * @param ID
+     * @return 结果
+     */
+  public int delete(String ID);
+     /**
+     * 根据主键批量删除
+     * @param ID数组
+     * @return 结果
+     */
+   public int deleteByIds(String[] ids);
+
+     /**
+     * 修改${table.name}
+     * 
+     * @param ${entity} 信息
+     * @return 结果
+     */
+	public int update(${entity} ${table.entityName});
+	/**
+     * 根据主键查询信息
+     * 
+     * @param ID
+     * @return 结果
+     */
+	public ${entity} selectById(String ID);
+	/**
+     * 条件查询${entity}集合
+     * 
+     * @param ID
+     * @return 结果
+     */
+	public List<${entity}> selectList(${entity} ${table.entityName});
+}
+

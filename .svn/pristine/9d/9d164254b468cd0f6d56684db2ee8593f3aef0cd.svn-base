@@ -1,0 +1,9 @@
+server:
+  port: 9411
+eureka:
+  instance:
+    hostname: zipkin
+    prefer-ip-address: false
+  client:
+    service-url:
+      defaultZone: http://172.20.120.18:8761/eureka/

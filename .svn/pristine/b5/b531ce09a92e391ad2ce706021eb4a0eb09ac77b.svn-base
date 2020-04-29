@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: admin-service
+  cloud:
+    config:
+      uri: http://172.20.120.18:8001
+      fail-fast: true
+  profiles:
+    active: 
+
+
+
+
+
+
+

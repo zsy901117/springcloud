@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="role">
+	<insert id="add" parameterType="role">
+		insert into
+		user_role(user_id,role_id) values
+		(#{uid},#{rid});
+	</insert>
+	<delete id="deleteRole">
+		delete from user_role where
+		user_id=#{uid} and
+		role_id=#{rid};
+	</delete>
+	<update id="update" parameterType="role">
+		update
+		userinfo
+		<set>
+			<if test="name!=null and name!=''">
+				name=#{name},
+			</if>
+			<if test="sex!=null and sex!=''">
+				sex=#{sex},
+			</if>
+			<if test="department!=null and department!=''">
+				department=#{department},
+			</if>
+			<if test="duty!=null and duty!=''">
+				duty=#{duty},
+			</if>
+			<if test="company!=null and company!=''">
+				company=#{company},
+			</if>
+		</set>
+		<where>
+			id =#{id}
+		</where>
+	</update>
+	<select id="findById" parameterType="long" resultMap="roles">
+		select
+		r.id
+		rid,
+		r.name rname
+		from role r
+		left join user_role ur on r.id=ur.role_id
+		where
+		ur.user_id=#{id}
+	</select>
+	<resultMap type="role" id="roles">
+		<id property="id" column="rid" />
+		<result property="name" column="rname" />
+	</resultMap>
+	<select id="findAll" parameterType="String"
+		resultMap="user_role">
+		SELECT u.username uname,
+		ui.name uiname,
+		ui.department
+		udepartment,
+		ui.company ucompany,
+		ui.duty uduty,
+		r.name rname,
+		a.authname
+		aname
+		FROM USER u
+		LEFT JOIN userinfo ui ON u.id=ui.id
+		where
+		company=#{company}
+	</select>
+	<select id="findRoleName" parameterType="long"
+		resultType="java.lang.String">
+		SELECT
+		r.name rname
+		FROM USER u LEFT JOIN user_role ur ON
+		u.id= ur.user_id LEFT
+		JOIN role r ON
+		ur.role_id=r.id WHERE u.id=#{id}
+	</select>
+	<resultMap type="java.util.List" id="rolenames">
+		<collection property="role" ofType="String">
+			<result property="name" column="rname" />
+		</collection>
+	</resultMap>
+	<resultMap type="user" id="user_role">
+		<id property="id" column="uid" />
+		<result property="username" column="uname" />
+		<association property="userInfo"
+			javaType="com.sg.entity.UserInfo">
+			<id property="id" column="uiid" />
+			<result property="name" column="uiname" />
+			<result property="department" column="udepartment" />
+			<result property="duty" column="uduty" />
+		</association>
+		<collection property="roles" ofType="role">
+			<result property="name" column="rname" />
+			<collection property="authorities" ofType="authority">
+				<result property="authname" column="aname" />
+			</collection>
+		</collection>
+	</resultMap>
+
+</mapper>

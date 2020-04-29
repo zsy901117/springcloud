@@ -1,0 +1,33 @@
+package com.sg.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.sg.service.RefreshRouteService;
+
+/**
+ * Created by zsy.
+ */
+@RestController
+public class RefreshController {
+
+    @Autowired
+    RefreshRouteService refreshRouteService;
+
+    @PostMapping("/refresh")
+    public String refreshRoute(){
+    	 return  refreshRouteService.refreshRoute();
+    }
+
+	/*
+	 * @Autowired ZuulHandlerMapping zuulHandlerMapping;
+	 * 
+	 * @RequestMapping("/watchNowRoute") public String watchNowRoute(){
+	 * //可以用debug模式看里面具体是什么 Map<String, Object> handlerMap =
+	 * zuulHandlerMapping.getHandlerMap(); return "watchNowRoute"; }
+	 */
+
+
+
+}

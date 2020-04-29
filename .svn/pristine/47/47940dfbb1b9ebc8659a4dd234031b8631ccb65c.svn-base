@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: zipkin
+  cloud:
+    config:
+      uri: http://localhost:8001
+      fail-fast: true
+  profiles:
+    active: 

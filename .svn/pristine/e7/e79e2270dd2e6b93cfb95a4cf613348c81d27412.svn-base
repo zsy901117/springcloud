@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户信息修改</title>
+<link href="/registry/css/jq22.css" rel="stylesheet" type="text/css" />
+<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="/registry/js/jq22.js"
+	th:inline="none"></script>
+</head>
+<body>
+	<div class='body_main'>
+		<!-- start main content -->
+		<div class='index_box' style='margin-top: 20px;'>
+			<div
+				style="position: fixed; color: red; margin: 70px 0 0 450px; font-size: 16px; Z-index: 100; display: block;"
+				id="hint"></div>
+			<div class='box_title'>
+				<div class='text_content'>
+					<h1>用户信息修改</h1>
+				</div>
+			</div>
+			<div class='box_main'>
+				<div id="register" class="register">
+					<form id="form" th:action="@{/user/update}" method="post"
+						onsubmit="return check();">
+						<div id="form_submit" class="form_submit">
+							<div class="fieldset">
+								<input id="id" name="id" th:value="${user.id}" type="hidden" />
+								<div class="field-group">
+									<label class="required title">用户名:</label> <span
+										class="control-group" id="username_input">
+										<div class="input_add_long_background">
+											<input class="register_input" type="text" id="username"
+												name="username" th:value="${user.username}" />
+										</div>
+									</span> <label class="tips">系统账号，用于区别用户</label>
+								</div>
+
+								<div class="field-group">
+									<label class="required title">姓名:</label> <span
+										class="control-group" id="name_input">
+										<div class="input_add_long_background">
+											<input class="register_input" type="text" id="name"
+												name="name" th:value="${user.userInfo.name}"
+												onblur="changName('name');" />
+										</div>
+									</span> <label class="tips">请输入真实姓名</label>
+								</div>
+								<div class="field-group">
+									<label class="required title">性别：</label> <span
+										class="control-group" style="line-height: 28px;"> <input
+										id="sex" type="radio" value="男" name="sex" checked /> 男 <input
+										id="sex" type="radio" value="女" name="sex" /> 女
+									</span> <label class="tips" style="margin-bottom: 5px;" id="tooltext1">请选择您的性别</label>
+								</div>
+								<div class="field-group">
+									<label class="required title">公司单位:</label> <span
+										class="control-group" id="company_input">
+										<div class="input_add_long_background">
+											<input class="register_input" type="text" id="company"
+												name="company" th:value="${user.userInfo.company}"
+												onblur="checkcompany('company');" />
+										</div>
+									</span> <label class="tips">你所属公司或机构的名称</label>
+								</div>
+								<div class="field-group">
+									<label class="required title">部门:</label> <span
+										class="control-group" id="departmnet_input">
+										<div class="input_add_long_background">
+											<input class="register_input" type="text" id="department"
+												name="departmnet" th:value="${user.userInfo.department}"
+												onblur="checkdepartment('department');" />
+										</div>
+									</span> <label class="tips">所属部门</label>
+								</div>
+								<div class="field-group">
+									<label class="required title">职位:</label> <span
+										class="control-group" id="duty_input">
+										<div class="input_add_long_background">
+											<input class="register_input" type="text" id="duty"
+												name="duty" th:value="${user.userInfo.duty}"
+												onblur="checkduty('duty');" />
+										</div>
+									</span> <label class="tips">在公司担任的职位</label>
+								</div>
+							</div>
+						</div>
+						<div id="div_submit" class="div_submit">
+							<div class='div_submit_button'>
+								<input id="submit" type="submit" value="提交"
+									class='button_button disabled' />
+							</div>
+						</div>
+					</form>
+				</div>
+				<script type="text/javascript" th:inline="none">
+					var uname = false;
+					$("#username").blur(function() {
+						var u = $("input[name=username]").val();
+
+						$.ajax({
+							type : "post",
+							url : "/user/checkname",
+							dataType : "json",
+							data : {
+								"username" : u
+							},
+							success : function(data) {
+								if (data.result == "success") {
+									show();
+								} else {
+									uname = true;
+								}
+							},
+							error : function() {
+								alert("网络错误");
+							}
+						});
+					})
+					function show() {
+						showTooltips('username_input', '不能更改用户名');
+					}
+
+					function check() {
+						hideAllTooltips();
+						var ckh_result = true;
+						if (uname && cpwd2) {
+						} else {
+							ckh_result = false;
+						}
+						if ($('#username').val() == '') {
+							showTooltips('username_input', '用户名不能为空');
+							ckh_result = false;
+						}
+						if ($('#pwd').val() == '') {
+							showTooltips('pwd_input', '密码不能为空');
+							ckh_result = false;
+						}
+						if ($('#name').val() == '') {
+							showTooltips('name_input', '姓名不能为空！');
+							ckh_result = false;
+						}
+						if ($('#company').val() == '') {
+							showTooltips('company_input', '所属单位不能为空');
+							ckh_result = false;
+						}
+						if ($('#departmnet').val() == '') {
+							showTooltips('departmnet_input', '所属部门不能为空');
+							ckh_result = false;
+						}
+						if ($('#duty').val() == '') {
+							showTooltips('duty_input', '职位不能为空');
+							ckh_result = false;
+						}
+						return ckh_result;
+					}
+				</script>
+			</div>
+			<div class='box_bottom'></div>
+		</div>
+	</div>
+</body>
+</html>

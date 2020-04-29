@@ -1,0 +1,85 @@
+package com.sg.service.impl;
+
+import com.sg.entity.Role_menu;
+import com.sg.mapper.Role_menuMapper;
+import com.sg.service.IRole_menuService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+/**
+ * <p>
+ *  服务实现类
+ * </p>
+ *
+ * @author zsy
+ * @since 2019-05-29
+ */
+@Service
+public class Role_menuServiceImpl implements IRole_menuService {
+ @Autowired
+ private Role_menuMapper Role_menumapper;
+ 
+     /**
+     * 新增role_menu
+     * 
+     * @param Role_menu信息
+     * 
+     */
+     @Override
+  public int insert(Role_menu Role_menu){
+  return Role_menumapper.insert(Role_menu);
+  }
+
+    /**
+     * 根据主键删除
+     * 
+     * @param ID
+     * @return 结果
+     */
+     @Override
+  public int delete(String ID){
+  return Role_menumapper.delete(ID);
+  }
+     /**
+     * 根据主键批量删除
+     * @param ID数组
+     * @return 结果
+     */
+     @Override
+   public int deleteByIds(String[] ids){
+   return Role_menumapper.deleteByIds(ids);
+   }
+
+     /**
+     * 修改role_menu
+     * 
+     * @param Role_menu 信息
+     * @return 结果
+     */
+     @Override
+	public int update(Role_menu Role_menu){
+	return Role_menumapper.update(Role_menu);
+	}
+	/**
+     * 根据主键查询信息
+     * 
+     * @param ID
+     * @return 结果
+     */
+     @Override
+	public Role_menu selectById(String ID){
+	return Role_menumapper.selectById(ID);
+	}
+	/**
+     * 条件查询Role_menu集合
+     * 
+     * @param ID
+     * @return 结果
+     */
+     @Override
+	public List<Role_menu> selectList(Role_menu Role_menu){
+	return Role_menumapper.selectList(Role_menu);
+	}
+}
+

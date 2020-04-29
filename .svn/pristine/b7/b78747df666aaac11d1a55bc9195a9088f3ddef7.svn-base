@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+	<insert id="add" parameterType="user">
+		<selectKey keyColumn="id" keyProperty="id" order="AFTER"
+			resultType="Long">
+			SELECT LAST_INSERT_ID() AS ID 
+		</selectKey>
+		insert into user(username,password) values
+		(#{username},#{password});
+	</insert>
+	<delete id="delete" parameterType="Long">
+		delete from user where
+		id=#{id};
+	</delete>
+	<select id="findByName" resultMap="RM_user"
+		parameterType="String">
+		SELECT
+		u.id uid,
+		u.username uname,
+		u.password upwd,
+		ui.id
+		uiid,
+		ui.name uiname,
+		ui.sex usex,
+		ui.department udepartment,
+		ui.duty
+		uduty,
+		ui.company ucompany
+		FROM
+		user u LEFT JOIN
+		userinfo
+		ui on
+		u.id=ui.id
+		where username=#{name}
+	</select>
+	<select id="findById" resultMap="RM_user" parameterType="long">
+		SELECT
+		u.id uid,
+		u.username uname,
+		u.password upwd,
+		ui.id uiid,
+		ui.name uiname,
+		ui.sex usex,
+		ui.department udepartment,
+		ui.duty uduty,
+		ui.company
+		ucompany
+		FROM
+		user u LEFT JOIN
+		userinfo ui on
+		u.id=ui.id
+		where u.id=#{id}
+	</select>
+	<select id="findAll" resultMap="RM_user" parameterType="String">
+		SELECT
+		u.id uid,
+		u.username uname,
+		u.password upwd,
+		ui.id uiid,
+		ui.name uiname,
+		ui.sex usex,
+		ui.department udepartment,
+		ui.duty uduty,
+		ui.company
+		ucompany
+		FROM
+		user u LEFT JOIN
+		userinfo ui on
+		u.id=ui.id
+		where
+		company=#{company}
+	</select>
+	<update id="update" parameterType="user">
+		update user
+		<set>
+			<if test="username!=null and username!=''">
+				username=#{username},
+			</if>
+			<if test="password!=null and password!=''">
+				password=#{password},
+			</if>
+		</set>
+		<where>
+			id =#{id}
+		</where>
+	</update>
+	<resultMap type="user" id="RM_user">
+		<id property="id" column="uid" />
+		<result property="username" column="uname" />
+		<result property="password" column="upwd" />
+		<association property="userInfo"
+			javaType="com.sg.entity.UserInfo">
+			<id property="id" column="uiid" />
+			<result property="name" column="uiname" />
+			<result property="sex" column="usex" />
+			<result property="department" column="udepartment" />
+			<result property="duty" column="uduty" />
+			<result property="company" column="ucompany" />
+		</association>
+	</resultMap>
+</mapper>

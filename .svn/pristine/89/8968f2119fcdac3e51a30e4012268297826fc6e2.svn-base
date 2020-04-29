@@ -1,0 +1,88 @@
+package com.sg.controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.sg.entity.User_role;
+import com.sg.service.IUser_roleService;
+
+/**
+ * <p>
+ *  前端控制器
+ * </p>
+ *
+ * @author zsy
+ * @since 2019-05-29
+ */
+@RestController
+@RequestMapping("/User_role")
+public class User_roleController extends BaseController{
+
+@Autowired private IUser_roleService User_roleService;
+
+    /**
+     * 条件查询User_role集合
+     * 
+     * @param ID
+     * @return 结果
+     */
+
+@PostMapping("/list")
+public List<User_role> list(User_role User_role){
+  return User_roleService.selectList(User_role);
+}
+   /**
+     * 根据主键查询信息
+     * 
+     * @param ID
+     * @return 结果
+     */
+@PostMapping("/findOne")
+public User_role findOne(String id){
+ return User_roleService.selectById(id);
+}
+   /**
+     * 新增user_role
+     * 
+     * @param User_role信息
+     * 
+     */
+@PostMapping("/add")
+public int add(User_role User_role){
+ return User_roleService.insert(User_role);
+}
+    /**
+     * 修改user_role
+     * 
+     * @param User_role 信息
+     * @return 结果
+     */
+@PutMapping("/update")
+public int update(User_role User_role){
+ return User_roleService.update(User_role);
+}
+ 
+    /**
+     * 根据主键删除
+     * 
+     * @param ID
+     * @return 结果
+     */
+@PostMapping("/deleteOne")
+public int deleteOne(String id){
+ return User_roleService.delete(id);
+}
+
+     /**
+     * 根据主键批量删除
+     * @param ID数组
+     * @return 结果
+     */
+@PostMapping("/deleteList")
+public int deleteList(String[] ids){
+return User_roleService.deleteByIds(ids);
+}
+}
+

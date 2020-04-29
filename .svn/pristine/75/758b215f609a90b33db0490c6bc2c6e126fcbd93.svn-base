@@ -1,0 +1,88 @@
+package com.sg.controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.sg.entity.Role_menu;
+import com.sg.service.IRole_menuService;
+
+/**
+ * <p>
+ *  前端控制器
+ * </p>
+ *
+ * @author zsy
+ * @since 2019-05-29
+ */
+@RestController
+@RequestMapping("/Role_menu")
+public class Role_menuController extends BaseController{
+
+@Autowired private IRole_menuService Role_menuService;
+
+    /**
+     * 条件查询Role_menu集合
+     * 
+     * @param ID
+     * @return 结果
+     */
+
+@PostMapping("/list")
+public List<Role_menu> list(Role_menu Role_menu){
+  return Role_menuService.selectList(Role_menu);
+}
+   /**
+     * 根据主键查询信息
+     * 
+     * @param ID
+     * @return 结果
+     */
+@PostMapping("/findOne")
+public Role_menu findOne(String id){
+ return Role_menuService.selectById(id);
+}
+   /**
+     * 新增role_menu
+     * 
+     * @param Role_menu信息
+     * 
+     */
+@PostMapping("/add")
+public int add(Role_menu Role_menu){
+ return Role_menuService.insert(Role_menu);
+}
+    /**
+     * 修改role_menu
+     * 
+     * @param Role_menu 信息
+     * @return 结果
+     */
+@PutMapping("/update")
+public int update(Role_menu Role_menu){
+ return Role_menuService.update(Role_menu);
+}
+ 
+    /**
+     * 根据主键删除
+     * 
+     * @param ID
+     * @return 结果
+     */
+@PostMapping("/deleteOne")
+public int deleteOne(String id){
+ return Role_menuService.delete(id);
+}
+
+     /**
+     * 根据主键批量删除
+     * @param ID数组
+     * @return 结果
+     */
+@PostMapping("/deleteList")
+public int deleteList(String[] ids){
+return Role_menuService.deleteByIds(ids);
+}
+}
+

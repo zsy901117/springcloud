@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sg.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sg.entity.User">
+        <id column="user_id" property="user_id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="name" property="name" />
+        <result column="birthday" property="birthday" />
+        <result column="age" property="age" />
+        <result column="sex" property="sex" />
+        <result column="company" property="company" />
+        <result column="department" property="department" />
+        <result column="duty" property="duty" />
+        <result column="tel" property="tel" />
+        <result column="political" property="political" />
+        <result column="education" property="education" />
+        <result column="address" property="address" />
+        <result column="del_flag" property="del_flag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        user_id, username, password, name, birthday, age, sex, company, department, duty, tel, political, education, address, del_flag
+    </sql>
+
+<insert id="insert" parameterType="User">
+insert into user 
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<if test="user_id != null "> user_id,</if>
+<if test="username != null "> username,</if>
+<if test="password != null "> password,</if>
+<if test="name != null "> name,</if>
+<if test="birthday != null "> birthday,</if>
+<if test="age != null "> age,</if>
+<if test="sex != null "> sex,</if>
+<if test="company != null "> company,</if>
+<if test="department != null "> department,</if>
+<if test="duty != null "> duty,</if>
+<if test="tel != null "> tel,</if>
+<if test="political != null "> political,</if>
+<if test="education != null "> education,</if>
+<if test="address != null "> address,</if>
+<if test="del_flag != null "> del_flag,</if>
+</trim>
+<trim prefix="values (" suffix=")" suffixOverrides=",">
+<if test="user_id != null "> #{user_id},</if>
+<if test="username != null "> #{username},</if>
+<if test="password != null "> #{password},</if>
+<if test="name != null "> #{name},</if>
+<if test="birthday != null "> #{birthday},</if>
+<if test="age != null "> #{age},</if>
+<if test="sex != null "> #{sex},</if>
+<if test="company != null "> #{company},</if>
+<if test="department != null "> #{department},</if>
+<if test="duty != null "> #{duty},</if>
+<if test="tel != null "> #{tel},</if>
+<if test="political != null "> #{political},</if>
+<if test="education != null "> #{education},</if>
+<if test="address != null "> #{address},</if>
+<if test="del_flag != null "> #{del_flag},</if>
+</trim>
+</insert>
+<delete id="deleteById" parameterType="String">
+ delete from user where ID = #{ID}
+</delete>
+<delete id="deleteByIds" parameterType="String">
+        delete from user where  ID  in 
+        <foreach item="ID" collection="array" open="(" separator="," close=")">
+            #{ID}
+        </foreach>
+</delete>
+<update id="update" parameterType="User">
+        update user
+        <trim prefix="SET" suffixOverrides=",">
+           <if test="username != null ">  username = #{username},</if>
+           <if test="password != null ">  password = #{password},</if>
+           <if test="name != null ">  name = #{name},</if>
+           <if test="birthday != null ">  birthday = #{birthday},</if>
+           <if test="age != null ">  age = #{age},</if>
+           <if test="sex != null ">  sex = #{sex},</if>
+           <if test="company != null ">  company = #{company},</if>
+           <if test="department != null ">  department = #{department},</if>
+           <if test="duty != null ">  duty = #{duty},</if>
+           <if test="tel != null ">  tel = #{tel},</if>
+           <if test="political != null ">  political = #{political},</if>
+           <if test="education != null ">  education = #{education},</if>
+           <if test="address != null ">  address = #{address},</if>
+           <if test="del_flag != null ">  del_flag = #{del_flag},</if>
+        </trim>
+        where    ID= #{ID}
+    </update>
+<select id="selectList" parameterType="User" resultMap="BaseResultMap" >
+select <include refid="Base_Column_List" /> from user
+<where>
+<if test="user_id != null "> and user_id = #{user_id}</if>
+<if test="username != null "> and username = #{username}</if>
+<if test="password != null "> and password = #{password}</if>
+<if test="name != null "> and name = #{name}</if>
+<if test="birthday != null "> and birthday = #{birthday}</if>
+<if test="age != null "> and age = #{age}</if>
+<if test="sex != null "> and sex = #{sex}</if>
+<if test="company != null "> and company = #{company}</if>
+<if test="department != null "> and department = #{department}</if>
+<if test="duty != null "> and duty = #{duty}</if>
+<if test="tel != null "> and tel = #{tel}</if>
+<if test="political != null "> and political = #{political}</if>
+<if test="education != null "> and education = #{education}</if>
+<if test="address != null "> and address = #{address}</if>
+<if test="del_flag != null "> and del_flag = #{del_flag}</if>
+</where>
+</select>
+<select id="selectById" parameterType="String" resultMap="BaseResultMap">
+select<include refid="Base_Column_List" />from user where ID=#{ID}
+</select>
+
+</mapper>

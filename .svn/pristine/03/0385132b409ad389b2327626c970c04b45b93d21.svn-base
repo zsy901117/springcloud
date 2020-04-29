@@ -1,0 +1,60 @@
+package com.sg.service;
+
+import com.sg.entity.Role_menu;
+import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
+/**
+ * <p>
+ *  服务类
+ * </p>
+ *
+ * @author zsy
+ * @since 2019-05-29
+ */
+
+public interface IRole_menuService  {
+  /**
+     * 新增role_menu
+     * 
+     * @param Role_menu信息
+     * 
+     */
+  public int insert(Role_menu Role_menu);
+
+    /**
+     * 根据主键删除
+     * 
+     * @param ID
+     * @return 结果
+     */
+  public int delete(String ID);
+     /**
+     * 根据主键批量删除
+     * @param ID数组
+     * @return 结果
+     */
+   public int deleteByIds(String[] ids);
+
+     /**
+     * 修改role_menu
+     * 
+     * @param Role_menu 信息
+     * @return 结果
+     */
+	public int update(Role_menu Role_menu);
+	/**
+     * 根据主键查询信息
+     * 
+     * @param ID
+     * @return 结果
+     */
+	public Role_menu selectById(String ID);
+	/**
+     * 条件查询Role_menu集合
+     * 
+     * @param ID
+     * @return 结果
+     */
+	public List<Role_menu> selectList(Role_menu Role_menu);
+}
+
