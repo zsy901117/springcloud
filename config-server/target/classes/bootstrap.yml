@@ -1,6 +1,0 @@
-spring:
-  application:
-    name: config  
-management:
-  security:
-    enabled: false 

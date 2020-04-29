@@ -11,13 +11,11 @@
         <module name="gateway-service" />
         <module name="zipkin-service" />
         <module name="common" />
-        <module name="admin-service" />
         <module name="monitor-service" />
-        <module name="SyncTime" />
         <module name="eureka-server" />
         <module name="system-user" />
         <module name="config-server" />
-        <module name="Communication" />
+        <module name="admin-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

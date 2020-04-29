@@ -67,7 +67,5 @@
         <module>common</module>
         <module>zipkin-service</module>
         <module>system-user</module>
-        <module>SyncTime</module>
-        <module>Communication</module>
     </modules>
 </project>
