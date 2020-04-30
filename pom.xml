@@ -51,6 +51,9 @@
                             <goals>
                                 <goal>repackage</goal>
                             </goals>
+                            <configuration>
+                                <outputDirectory>F:\springcloud\</outputDirectory>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>

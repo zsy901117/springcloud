@@ -1,4 +1,4 @@
-D:\ServiceBus\Code\SpringCloudDemo\common\src\main\java\com\sg\annotation\SysLogger.java
-D:\ServiceBus\Code\SpringCloudDemo\common\src\main\java\com\sg\dto\RespDTO.java
-D:\ServiceBus\Code\SpringCloudDemo\common\src\main\java\com\sg\exception\ErrorCode.java
-D:\ServiceBus\Code\SpringCloudDemo\common\src\main\java\com\sg\exception\CommonException.java
+D:\workspace\spingcloud-demo\common\src\main\java\com\sg\exception\CommonException.java
+D:\workspace\spingcloud-demo\common\src\main\java\com\sg\dto\RespDTO.java
+D:\workspace\spingcloud-demo\common\src\main\java\com\sg\annotation\SysLogger.java
+D:\workspace\spingcloud-demo\common\src\main\java\com\sg\exception\ErrorCode.java

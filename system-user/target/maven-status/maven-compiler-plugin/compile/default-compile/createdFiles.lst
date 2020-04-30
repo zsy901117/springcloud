@@ -35,7 +35,6 @@ com\sg\controller\UserController.class
 com\sg\feignclient\AuthServiceClient.class
 com\sg\exception\ErrorCode.class
 com\sg\entity\Menu.class
-com\sg\config\MybatisPlusConfig.class
 com\sg\entity\Role.class
 com\sg\service\impl\MenuServiceImpl.class
 com\sg\util\BPwdEncoderUtils.class
