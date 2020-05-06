@@ -52,7 +52,7 @@
                                 <goal>repackage</goal>
                             </goals>
                             <configuration>
-                                <outputDirectory>/root/springcloud</outputDirectory>
+                                <outputDirectory>/springcloud</outputDirectory>
                             </configuration>
                         </execution>
                     </executions>
